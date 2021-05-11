@@ -1,0 +1,75 @@
+{% extends 'base.html' %} {% block title %}Главная{% endblock %} {% block content %} {% load static%}
+<div class="content">
+    <div class="container">
+        <form action="{% url 'video_analysis' user.id%}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <br>
+            <!-- <h3 class="font-weight-light text-center text-lg-left mt-4 mb-0" class="text-left">Выберите видеофайлы для анализа </h3>
+            <br>
+            <input type="file" class="form-control-file" id="FormControlFile" name="videoFile">
+-->
+            <label for="recipient-name" class="col-form-label">Путь к файлу:</label>
+            <input type="text" name="VIDEO" class="form-control" id="recipient-name">
+
+
+
+            <hr>
+
+            <div class="progress-wrapper'">
+                <div id='progress-bar' class='progress-bar progress-bar-striped progress-bar-animated' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+            </div>
+            <div id="progress-bar-message">Waiting for progress to start...</div>
+            {% if result.task_id %}
+            <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+            <script>
+
+                function visionResultButton (){
+                document.getElementById("buttonResult").style.visibility="visible";
+                }
+
+                $(function () {
+                    document.getElementById("buttonResult").style.visibility="hidden";
+                    var progressUrl = "{% url 'celery_progress:task_status' result.task_id %}";
+                    CeleryProgressBar.initProgressBar(progressUrl,{
+                     onSuccess: visionResultButton,
+                    })
+                });
+            </script>
+            {% endif %}
+
+            <hr>
+
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <button id="btnStart" class="btn btn-primary btn-working btn-lg" type="submit">Старт</button>
+                    </div>
+                    {% if id%}
+                    <div class="col-lg-6 col-md-6 col-12 text-md-right">
+                        <a class="btn btn-primary btn-working btn-lg" id ="buttonResult" href="{% url 'result' id %}">Результаты</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+
+
+<div class="info">
+    <button type="button" class="btn btn-warning btn-circle d-none d-sm-inline" data-container="body" data-toggle="popover" data-placement="left" data-content="После нажатия на кнопку старт, запустится процес анализа данных, пожалуйста, не закрывайте страницу"><i class="bi bi-info" ></i></button>
+</div>
+
+{% endblock %} {%block scripts%}
+<script>
+    $(function() {
+        $('[data-toggle="popover"]').popover()
+    })
+</script>
+{% endblock %}
+</body>
+
+</html>

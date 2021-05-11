@@ -1,0 +1,154 @@
+{% extends 'base.html' %} {% block title %}Кабинет администратора{% endblock %} {% block content %}
+{%if user.is_staff%}
+<div class="content">
+        <br>
+        <div class="container">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped AdminTable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Личность</th>
+                            <th scope="col">Дата добавления</th>
+                            <th scope="col">Описание личности</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for pers in person %}
+                        <tr>
+                            <td>{{pers.Full_name}}</td>
+                            <td>{{pers.Date}}</td>
+                            <td>{{pers.Description}}</td>
+                            <td> <a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-person-{{pers.id}}" > <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-x" viewBox="0 0 16 16">
+                                <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                <path fill-rule="evenodd" d="M12.146 5.146a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708z"/>
+                              </svg></a>
+                            <a href="{% url 'photo_person' pers.id %}" class="btn btn-sm btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder2-open" viewBox="0 0 16 16">
+                                <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14V3.5zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5V6zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7H1.633z"/>
+                              </svg> </a></td>
+                        </tr>
+
+
+
+                    <!--Модальное окно удаления-->
+        <div class="modal fade" id="delete-person-{{pers.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLongTitle">Подтверждение</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                    </div>
+                    <div class="modal-body">
+                        Вы уверены, что хотите удалить данные о личности "{{pers.Full_name}}"?
+                        <br><p class="text-danger">Удаление личности повлечет удаление всех результатов поиска, где была найдена данная личность<p>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                        <form action="{% url 'delete_person' pers.id %}" method="post">
+                            {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" name = "_delete" >Удалить</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <br><br>
+
+
+        <div class=" text-center">
+            <button type="button" class="btn btn-primary btn-lg btn-working" data-toggle="modal" data-target="#AddModal">Добавить новую персону</button>
+        </div>
+
+
+<form action="{% url 'create_person' user.id%}" method = "post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <!--Модальное окно добавления-->
+        <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AddModalLabel">Добавление персоны</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Имя:</label>
+                                <input type="text" name="NAME" class="form-control" id="recipient-name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Описание:</label>
+                                <textarea class="form-control" name="DESCRIPTION" id="message-text"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Добавить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</form>
+
+
+
+
+    </div>
+
+        {%else%}
+<div class="content">
+    <div class="container">
+        <br>
+        <h2 class="text-center align-middle">У Вас нет прав для посещения данной страницы</h2>
+    </div>
+
+
+</div>
+
+    {%endif%}
+    {% endblock %}
+    {%block scripts%}
+
+    <script>
+        $('.AdminTable').DataTable({
+            language: {
+                search: "Поиск:",
+                lengthMenu: "Показать _MENU_ записей",
+                info: "Записи с _START_ до _END_ из _TOTAL_ записей",
+                infoEmpty: "Записи с 0 до 0 из 0 записей",
+                paginate: {
+                    first: "Первая",
+                    previous: "Предыдущая",
+                    next: "Следующая",
+                    last: "Последняя"
+                },
+
+            }
+        });
+        $(function() {
+            $('[data-toggle="popover"]').popover()
+        })
+    </script>
+
+
+    {% endblock %}

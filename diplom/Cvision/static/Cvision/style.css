@@ -1,0 +1,95 @@
+html {
+    min-height: 100vh;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(245, 245, 245);
+}
+
+.form-signin {
+    position: absolute;
+    width: 100%;
+    max-width: 330px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 50%;
+    transform: translate(0, -65%);
+}
+
+.bg-light {
+    background-color: rgb(202, 217, 231)!important;
+}
+
+.footer {
+    flex-grow: 0;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: #bed2e4e3;
+}
+
+.container {
+    max-width: 1140px !important;
+}
+
+.btn-working {
+    margin-bottom: 15px;
+}
+
+.lower-button {
+    width: 100%;
+    height: auto;
+    margin: auto;
+    flex-grow: 0;
+}
+
+.info {
+    flex-grow: 0;
+    width: 100%;
+    padding: 0.3rem;
+    text-align: right;
+}
+
+.content {
+    flex-grow: 2;
+}
+
+.table {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.progress-bar {
+    background-color: rgb(40, 167, 69) !important;
+}
+
+.carousel-inner {
+    width: 60% !important;
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+
+.btn-primary {
+    background-color: #0070d4 !important;
+    border-color: #0070d4 !important;
+}
+
+.btn-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 19px;
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 16px;
+}
+
+.button_a {
+    color: white;
+}

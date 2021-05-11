@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% block title %}Главная{% endblock %} {% block content %}
+
+<div class="content">
+    <div class="container">
+        <div class="welcome-text">
+            <br>
+            <h1 class="font-weight-light text-center">Добро пожаловать на сервис поиска лиц</h1>
+
+            <br>
+            <h3 class="font-weight-light text-center">Данный сервис предназначен для сотрудников ВГТРК, он позволяет выполнять описание метаданных видеоматериалов с помощью алгоритмов машинного обучения</h3>
+        </div>
+
+<br><br><br><br>
+        <div class="text-center ">
+            <a href="{% url 'work' %}" class="btn btn-primary btn-lg">Перейти в рабочую область</a>
+        </div>
+        <br>
+    </div>
+    <script>
+        $('.carousel1').carousel({
+            interval: 5000
+        })
+    </script>
+</div>
+
+{% endblock %}

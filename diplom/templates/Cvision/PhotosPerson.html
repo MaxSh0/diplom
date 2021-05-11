@@ -1,0 +1,151 @@
+{% extends 'base.html' %} {% block title %}Результаты{% endblock %} {% block content %}
+
+
+<div class="content">
+        <div class="container">
+            <p class="font-weight-normal text-center text-lg-left mt-4 mb-0" class="text-left">На данной странице вы можете добавить изображения к созданной персоне</p>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped ResultTable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Изображение</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Сотрудник</th>
+                            <th scope="col">Дата добавления</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {%for  model in  models %}
+
+                        <tr>
+                            <td>{{model.FileName}}</td>
+                            <td>{{model.Description}}</td>
+                            <td>{{model.NameEmployee}}</td>
+                            <td>{{model.DateAdded}}</td>
+                            <td><a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-person-{{model.id}}" > <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-x" viewBox="0 0 16 16">
+                                <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                <path fill-rule="evenodd" d="M12.146 5.146a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708z"/>
+                              </svg></a></td>
+                        </tr>
+                     <div class="modal fade" id="delete-person-{{model.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document" >
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalLongTitle">Подтверждение</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            <div class="modal-body">
+                        Вы уверены, что хотите удалить фото "{{model.FileName}}"?
+
+                        </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                        <form action="{% url 'delete_person_photo' model.id %}" method="post">
+                            {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" name = "_delete" >Удалить</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="container lower-button">
+        <div class="row justify-content-between">
+            <div class="col-lg-6 col-md-6 col-12">
+                <a class="btn btn-secondary btn-lg btn-working" href="{% url 'cabinet_adm' %}">Назад</a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12 text-md-right">
+                <button type="button" class="btn btn-primary btn-lg btn-working" data-toggle="modal" data-target="#AddModal">Добавить фотографию персоны</button>
+            </div>
+        </div>
+    </div>
+
+<form action="{% url 'create_model' id_person user.id %}" method = "post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <!--Модальное окно добавления-->
+        <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AddModalLabel">Добавление фотографии персоны</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Описание:</label>
+                                <textarea class="form-control" name="DESCRIPTION" id="message-text"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="container">
+                        <label for="FormControlFile" class="col-form-label">Выберите изображение</label>
+                        <input type="file" name="myfile" class="form-control-file" id="FormControlFile">
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Добавить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</form>
+
+
+     <div class="info">
+        <button type="button" class="btn btn-warning btn-circle d-none d-sm-inline" data-container="body" data-toggle="popover" data-placement="left" data-content="Поддерживаемые форматы добавления jpg, png"><i class="bi bi-info" ></i></button>
+    </div>
+
+{% endblock %}
+{%block scripts%}
+<script>
+        $('.ResultTable').DataTable({
+            language: {
+                search: "Поиск:",
+                lengthMenu: "Показать _MENU_ записей",
+                info: "Записи с _START_ до _END_ из _TOTAL_ записей",
+                infoEmpty: "Записи с 0 до 0 из 0 записей",
+                paginate: {
+                    first: "Первая",
+                    previous: "Предыдущая",
+                    next: "Следующая",
+                    last: "Последняя"
+                },
+
+            }
+        });
+        $(function() {
+            $('[data-toggle="popover"]').popover()
+        })
+    </script>
+{%endblock%}
+</body>
+
+</html>
+
